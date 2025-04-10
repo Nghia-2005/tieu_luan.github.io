@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Liên hệ</title>
+    <link rel="stylesheet" href="Lien_he.css" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <header>
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="index.html">Trang chủ</a></li>
+          <li><a href="Menu.html">Menu</a></li>
+          <li><a href="Khuyen_mai.html">Khuyến mãi</a></li>
+          <li><a href="Lien_he.html">Liên hệ</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section class="contact-section text-center">
+        <h2>Nhà hàng Hương Việt luôn kính chào quý khách</h2>
+        <p>
+          Chúng tôi, đội ngũ Nhà hàng Hương Việt, luôn sẵn sàng hỗ trợ bạn. Nếu
+          bạn có bất kỳ câu hỏi, yêu cầu hay thắc mắc nào, đừng ngần ngại liên
+          hệ với chúng tôi qua thông tin dưới đây. Chúng tôi sẽ phản hồi bạn
+          trong thời gian sớm nhất để giúp bạn giải quyết vấn đề.
+        </p>
+
+       
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#datBanModal"
+        >
+          Đặt bàn
+        </button>
+        <button
+          type="button"
+          class="btn btn-success"
+          data-bs-toggle="modal"
+          data-bs-target="#phanHoiModal"
+        >
+          Gửi phản hồi
+        </button>
+        <button
+          type="button"
+          class="btn btn-warning"
+          data-bs-toggle="modal"
+          data-bs-target="#tuyenDungModal"
+        >
+          Tuyển dụng
+        </button>
+      </section>
+
+      <!-- Modal Đặt bàn -->
+<div
+class="modal fade"
+id="datBanModal"
+tabindex="-1"
+aria-labelledby="datBanModalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="datBanModalLabel">Đặt Bàn</h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+        onclick="resetForm()"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form id="bookingForm">
+        <div class="mb-3">
+          <label for="name" class="form-label">Họ và Tên:</label>
+          <input type="text" class="form-control" id="name" required />
+        </div>
+        <div class="mb-3">
+          <label for="phone" class="form-label">Số Điện Thoại:</label>
+          <input type="tel" class="form-control" id="phone" required />
+        </div>
+        <div class="mb-3">
+          <label for="date" class="form-label">Ngày:</label>
+          <input type="date" class="form-control" id="date" required />
+        </div>
+        <div class="mb-3">
+          <label for="time" class="form-label">Giờ:</label>
+          <input type="time" class="form-control" id="time" required />
+        </div>
+        <div class="mb-3">
+          <label for="guests" class="form-label">Số Lượng Khách:</label>
+          <input
+            type="number"
+            class="form-control"
+            id="guests"
+            min="1"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="note" class="form-label">Ghi Chú:</label>
+          <textarea class="form-control" id="note"></textarea>
+        </div>
+        <div class="d-flex justify-content-between">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            onclick="resetForm()"
+          >
+            Đóng
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="addBooking()"
+          >
+            Xác Nhận
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<div class="container mt-5">
+<h3 class="text-center">
+  Danh Sách Đặt Bàn (<span id="bookingCount">0</span>)
+</h3>
+<ul id="bookingList" class="list-group">
+  <li class="list-group-item text-center">Chưa có đơn đặt bàn nào</li>
+</ul>
+</div>
+
+<script>
+// Lấy dữ liệu đặt bàn từ localStorage khi trang được tải lại
+let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
+
+// Cập nhật danh sách đặt bàn
+function updateBookingList() {
+  const list = document.getElementById("bookingList");
+  const bookingCount = document.getElementById("bookingCount");
+
+  list.innerHTML = "";
+  if (bookings.length === 0) {
+    list.innerHTML =
+      '<li class="list-group-item text-center">Chưa có đơn đặt bàn nào</li>';
+    bookingCount.innerText = "0";
+    return;
+  }
+
+  bookings.forEach((booking, index) => {
+    const li = document.createElement("li");
+    li.className =
+      "list-group-item d-flex justify-content-between align-items-center";
+    li.innerHTML = `
+    <div>
+      <b>${booking.name}</b> - ${booking.phone} <br>
+      📅 ${booking.date} ⏰ ${booking.time} - 👥 ${booking.guests} khách <br>
+      📝 ${booking.note || "Không có ghi chú"}
+    </div>
+    <div>
+      <button class="btn btn-warning btn-sm" onclick="editBooking(${index})">Sửa</button>
+    </div>
+  `;
+    list.appendChild(li);
+  });
+
+  // Cập nhật số lượng đặt bàn
+  bookingCount.innerText = bookings.length;
+
+  // Lưu lại vào localStorage mỗi khi danh sách thay đổi
+  localStorage.setItem("bookings", JSON.stringify(bookings));
+}
+
+// Thêm hoặc sửa đơn đặt bàn
+function addBooking() {
+  const name = document.getElementById("name").value;
+  const phone = document.getElementById("phone").value;
+  const date = document.getElementById("date").value;
+  const time = document.getElementById("time").value;
+  const guests = document.getElementById("guests").value;
+  const note = document.getElementById("note").value;
+
+  if (!name || !phone || !date || !time || !guests) {
+    alert("Vui lòng nhập đầy đủ thông tin!");
+    return;
+  }
+
+  const editIndex = document
+    .getElementById("bookingForm")
+    .getAttribute("data-edit-index");
+
+  if (editIndex !== null) {
+    // Nếu đang sửa, cập nhật lại thông tin
+    bookings[editIndex] = { name, phone, date, time, guests, note };
+    document
+      .getElementById("bookingForm")
+      .removeAttribute("data-edit-index");
+  } else {
+    // Nếu không phải sửa, thêm mới
+    const booking = { name, phone, date, time, guests, note };
+    bookings.push(booking);
+  }
+
+  updateBookingList(); // Cập nhật danh sách
+  document.getElementById("bookingForm").reset();
+  $("#datBanModal").modal("hide");
+}
+
+// Chỉnh sửa đơn đặt bàn
+function editBooking(index) {
+  const booking = bookings[index];
+
+  // Điền thông tin vào form
+  document.getElementById("name").value = booking.name;
+  document.getElementById("phone").value = booking.phone;
+  document.getElementById("date").value = booking.date;
+  document.getElementById("time").value = booking.time;
+  document.getElementById("guests").value = booking.guests;
+  document.getElementById("note").value = booking.note;
+
+  // Gán index vào form để biết đang sửa đơn nào
+  document
+    .getElementById("bookingForm")
+    .setAttribute("data-edit-index", index);
+
+  // Mở modal sửa
+  $("#datBanModal").modal("show");
+}
+
+// Reset form khi đóng modal
+function resetForm() {
+  document.getElementById("bookingForm").reset();
+  document
+    .getElementById("bookingForm")
+    .removeAttribute("data-edit-index");
+}
+
+// Khởi động khi trang được tải
+window.onload = updateBookingList;
+</script>
+
+
+      <!-- Modal Phản hồi -->
+<div
+class="modal fade"
+id="phanHoiModal"
+tabindex="-1"
+aria-labelledby="phanHoiLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="phanHoiLabel">Gửi phản hồi</h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="mb-3">
+          <label for="userName" class="form-label">Họ và tên:</label>
+          <input
+            type="text"
+            class="form-control"
+            id="userName"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="rating" class="form-label">Đánh giá:</label>
+          <select class="form-select" id="rating">
+            <option value="5">⭐️⭐️⭐️⭐️⭐️ - Tuyệt vời</option>
+            <option value="4">⭐️⭐️⭐️⭐️ - Tốt</option>
+            <option value="3">⭐️⭐️⭐️ - Trung bình</option>
+            <option value="2">⭐️⭐️ - Kém</option>
+            <option value="1">⭐️ - Rất tệ</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Nội dung phản hồi:</label>
+          <textarea
+            class="form-control"
+            id="message"
+            rows="3"
+            required
+          ></textarea>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-bs-dismiss="modal"
+      >
+        Đóng
+      </button>
+      <button
+        type="button"
+        class="btn btn-success"
+        onclick="addFeedback()"
+      >
+        Gửi
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Danh sách phản hồi -->
+<div class="container mt-4">
+<h3 class="text-center">
+  Danh Sách Phản Hồi <span id="feedbackCount"></span>
+</h3>
+<ul id="feedbackList" class="list-group">
+  <li class="list-group-item text-center">Chưa có phản hồi nào</li>
+</ul>
+</div>
+
+<script>
+let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
+
+// Cập nhật danh sách phản hồi và số lượng phản hồi
+function updateFeedbackList() {
+  const list = document.getElementById("feedbackList");
+  list.innerHTML = "";
+  const feedbackCount = document.getElementById("feedbackCount");
+
+  if (feedbacks.length === 0) {
+    list.innerHTML =
+      '<li class="list-group-item text-center">Chưa có phản hồi nào</li>';
+    feedbackCount.innerText = "";
+    return;
+  }
+
+  feedbackCount.innerText = `(${getTotalFeedbacks()} phản hồi)`;
+
+  feedbacks.forEach((fb, index) => {
+    const li = document.createElement("li");
+    li.className = "list-group-item";
+    li.innerHTML = `
+      <strong>${fb.name}</strong> - ${"⭐️".repeat(fb.rating)}<br>
+      <em>${fb.message}</em>
+      <hr>
+      <div>
+        <input type="text" id="commentText${index}" placeholder="Bình luận..." class="form-control mb-2">
+        <select class="form-select mb-2" id="commentIcon${index}">
+          <option value="😊">😊</option>
+          <option value="😞">😞</option>
+          <option value="❤️">❤️</option>
+          <option value="👍">👍</option>
+        </select>
+        <button class="btn btn-primary btn-sm" onclick="addComment(${index})">Thêm bình luận</button>
+      </div>
+      <ul id="commentsList${index}" class="list-group mt-2"></ul>
+    `;
+    list.appendChild(li);
+
+    // Hiển thị bình luận
+    updateComments(index);
+  });
+}
+
+// Thêm phản hồi mới
+function addFeedback() {
+  const name = document.getElementById("userName").value.trim();
+  const rating = document.getElementById("rating").value;
+  const message = document.getElementById("message").value.trim();
+
+  if (!name || !message) {
+    alert("Vui lòng nhập đầy đủ họ tên và nội dung phản hồi!");
+    return;
+  }
+
+  const feedback = {
+    name,
+    rating,
+    message,
+    comments: [],
+  };
+
+  feedbacks.push(feedback);
+  localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+  updateFeedbackList();
+
+  // Reset form
+  document.getElementById("userName").value = "";
+  document.getElementById("rating").value = "5";
+  document.getElementById("message").value = "";
+
+  // Đóng modal
+  const modal = bootstrap.Modal.getInstance(
+    document.getElementById("phanHoiModal")
+  );
+  modal.hide();
+}
+
+// Thêm bình luận
+function addComment(feedbackIndex) {
+  const commentText = document
+    .getElementById(`commentText${feedbackIndex}`)
+    .value.trim();
+  const commentIcon = document.getElementById(
+    `commentIcon${feedbackIndex}`
+  ).value;
+
+  if (!commentText) {
+    alert("Vui lòng nhập bình luận!");
+    return;
+  }
+
+  const comment = {
+    text: commentText,
+    icon: commentIcon,
+  };
+
+  feedbacks[feedbackIndex].comments.push(comment);
+  localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
+  updateComments(feedbackIndex);
+
+  // Cập nhật số lượng phản hồi
+  updateFeedbackList();
+
+  // Clear input fields
+  document.getElementById(`commentText${feedbackIndex}`).value = "";
+}
+
+// Hiển thị các bình luận
+function updateComments(feedbackIndex) {
+  const commentList = document.getElementById(
+    `commentsList${feedbackIndex}`
+  );
+  commentList.innerHTML = "";
+
+  if (feedbacks[feedbackIndex].comments.length === 0) {
+    commentList.innerHTML = ""; // Không hiển thị dòng chữ "Chưa có bình luận nào"
+    return;
+  }
+
+  feedbacks[feedbackIndex].comments.forEach((comment, index) => {
+    const li = document.createElement("li");
+    li.className =
+      "list-group-item d-flex justify-content-between align-items-center";
+    li.innerHTML = `${comment.icon} ${comment.text}`;
+    commentList.appendChild(li);
+  });
+}
+
+// Tính tổng số phản hồi (bao gồm bình luận)
+function getTotalFeedbacks() {
+  let total = feedbacks.length;
+
+  feedbacks.forEach((fb) => {
+    total += fb.comments.length; // Cộng thêm số lượng bình luận vào tổng số phản hồi
+  });
+
+  return total;
+}
+
+// Gọi hàm cập nhật khi tải trang
+updateFeedbackList();
+</script>
+
+
+     <!-- Modal Tuyển dụng -->
+<div class="modal fade" id="tuyenDungModal" tabindex="-1" aria-labelledby="tuyenDungLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tuyenDungLabel">Tuyển dụng Nhà Hàng</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="tuyenDungForm">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="hoTen" class="col-form-label">Họ và tên:</label>
+              <input type="text" class="form-control" id="hoTen" name="hoTen" required />
+            </div>
+            <div class="col-md-6">
+              <label for="soDienThoai" class="col-form-label">Số điện thoại:</label>
+              <input type="tel" class="form-control" id="soDienThoai" name="soDienThoai" required />
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="gioiTinh" class="col-form-label">Giới tính:</label>
+              <select class="form-select" id="gioiTinh" name="gioiTinh" required>
+                <option value="">Chọn giới tính</option>
+                <option value="Nam">Nam</option>
+                <option value="Nữ">Nữ</option>
+                <option value="Khác">Khác</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="viTri" class="col-form-label">Vị trí ứng tuyển:</label>
+              <select class="form-select" id="viTri" name="viTri" required>
+                <option value="">Chọn vị trí</option>
+                <option value="Bếp trưởng">Bếp trưởng</option>
+                <option value="Nhân viên phục vụ">Nhân viên phục vụ</option>
+                <option value="Quản lý">Quản lý</option>
+                <option value="Tạp vụ">Tạp vụ</option>
+                <option value="Pha chế">Pha chế</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="ngaySinh" class="col-form-label">Ngày sinh:</label>
+              <input type="date" class="form-control" id="ngaySinh" name="ngaySinh" required />
+            </div>
+            <div class="col-md-6">
+              <label for="luong" class="col-form-label">Mức lương mong muốn:</label>
+              <input type="number" class="form-control" id="luong" name="luong" required placeholder="Mức lương (VND)" />
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="kinhNghiem" class="col-form-label">Kinh nghiệm làm việc:</label>
+            <select class="form-select" id="kinhNghiem" name="kinhNghiem" required>
+              <option value="">Chọn kinh nghiệm</option>
+              <option value="Không có kinh nghiệm">Không có kinh nghiệm</option>
+              <option value="1-2 năm">1-2 năm</option>
+              <option value="3-5 năm">3-5 năm</option>
+              <option value="Trên 5 năm">Trên 5 năm</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="thoiGianLamViec" class="col-form-label">Thời gian làm việc:</label>
+            <select class="form-select" id="thoiGianLamViec" name="thoiGianLamViec" required onchange="showWorkingHours()">
+              <option value="">Chọn thời gian làm việc</option>
+              <option value="Full-time">Full-time</option>
+              <option value="Part-time">Part-time</option>
+            </select>
+          </div>
+
+          <div id="workingHours" class="mb-3" style="display: none">
+            <label class="col-form-label">Giờ làm việc:</label>
+            <p id="fullTimeHours" style="display: none">8:00 AM - 5:00 PM</p>
+            <div id="partTimeHours" style="display: none">
+              <p>Chọn ca làm việc:</p>
+              <div>
+                <input type="radio" id="morningShift" name="shift" value="Sáng" />
+                <label for="morningShift">Ca sáng: 7:00 AM - 12:00 PM</label>
+              </div>
+              <div>
+                <input type="radio" id="afternoonShift" name="shift" value="Chiều" />
+                <label for="afternoonShift">Ca chiều: 4:00 PM - 10:30 PM</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="uuDiem" class="col-form-label">Ưu điểm:</label>
+            <textarea class="form-control" id="uuDiem" name="uuDiem"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-warning" id="submitBtn">Nộp</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Danh sách ứng viên -->
+<div class="container mt-5">
+  <h3>Danh sách ứng viên đã ứng tuyển (<span id="totalApplicants">0</span>)</h3>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Họ và tên</th>
+        <th scope="col">Vị trí ứng tuyển</th>
+        <th scope="col">Thời gian làm việc</th>
+        <th scope="col">Mức lương mong muốn</th>
+        <th scope="col">Số điện thoại</th>
+        <th scope="col">Giới tính</th>
+        <th scope="col">Tuổi</th>
+        <th scope="col">Ưu điểm</th>
+      </tr>
+    </thead>
+    <tbody id="applicantList">
+      <!-- Dữ liệu ứng viên sẽ được thêm vào đây -->
+    </tbody>
+  </table>
+</div>
+
+<!-- Javascript xử lý -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  let applicantCount = 0;
+  const submitBtn = document.getElementById("submitBtn");
+  const applicantList = document.getElementById("applicantList");
+  const totalApplicants = document.getElementById("totalApplicants");
+
+  // Load applicants from LocalStorage
+  let applicants = JSON.parse(localStorage.getItem("applicants")) || [];
+  applicants.forEach(function (applicant) {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${applicant.hoTen}</td>
+        <td>${applicant.viTri}</td>
+        <td>${applicant.thoiGianLamViec} ${applicant.shift ? "(" + applicant.shift + ")" : ""}</td>
+        <td>${applicant.luong} VND</td>
+        <td>${applicant.soDienThoai}</td>
+        <td>${applicant.gioiTinh}</td>
+        <td>${applicant.age}</td>
+        <td>${applicant.uuDiem || "Không có"}</td>`; // Hiển thị "Không có" nếu không có ưu điểm
+    applicantList.appendChild(row);
+  });
+
+  // Update total applicants
+  totalApplicants.textContent = applicants.length;
+
+  submitBtn.addEventListener("click", function (event) {
+    event.preventDefault();
+
+    const hoTen = document.getElementById("hoTen").value;
+    const soDienThoai = document.getElementById("soDienThoai").value;
+    const gioiTinh = document.getElementById("gioiTinh").value;
+    const ngaySinh = document.getElementById("ngaySinh").value;
+    const viTri = document.getElementById("viTri").value;
+    const luong = document.getElementById("luong").value;
+    const kinhNghiem = document.getElementById("kinhNghiem").value;
+    const thoiGianLamViec = document.getElementById("thoiGianLamViec").value;
+    const shift = document.querySelector('input[name="shift"]:checked')?.value || "";
+    const uuDiem = document.getElementById("uuDiem").value || "Không có"; // Default to "Không có" if empty
+
+    if (hoTen && soDienThoai && gioiTinh && ngaySinh && viTri && luong && thoiGianLamViec) {
+      if (thoiGianLamViec === "Part-time" && shift === "") {
+        alert("Vui lòng chọn ca làm việc nếu bạn chọn Part-time.");
+        return;
+      }
+
+      const birthDate = new Date(ngaySinh);
+      const age = new Date().getFullYear() - birthDate.getFullYear();
+
+      if (age < 18) {
+        alert("Bạn phải trên 18 tuổi để ứng tuyển.");
+        return;
+      }
+
+      // Lưu thông tin ứng viên vào LocalStorage
+      const applicant = {
+        hoTen,
+        soDienThoai,
+        gioiTinh,
+        viTri,
+        luong,
+        kinhNghiem,
+        thoiGianLamViec,
+        shift,
+        age,
+        uuDiem,
+      };
+      applicants.push(applicant);
+      localStorage.setItem("applicants", JSON.stringify(applicants));
+
+      // Thêm ứng viên vào bảng
+      const row = document.createElement("tr");
+      row.innerHTML = `<td>${hoTen}</td>
+          <td>${viTri}</td>
+          <td>${thoiGianLamViec} ${shift ? "(" + shift + ")" : ""}</td>
+          <td>${luong} VND</td>
+          <td>${soDienThoai}</td>
+          <td>${gioiTinh}</td>
+          <td>${age}</td>
+          <td>${uuDiem}</td>`;
+      applicantList.appendChild(row);
+
+      applicantCount++;
+      totalApplicants.textContent = applicantCount;
+
+      const modal = bootstrap.Modal.getInstance(document.getElementById("tuyenDungModal"));
+      modal.hide();
+      document.getElementById("tuyenDungForm").reset();
+      document.getElementById("workingHours").style.display = "none";
+    } else {
+      alert("Vui lòng điền đầy đủ thông tin.");
+    }
+  });
+});
+
+// Hiển thị ca làm việc khi chọn Part-time
+function showWorkingHours() {
+  const thoiGianLamViec = document.getElementById("thoiGianLamViec").value;
+  const workingHoursDiv = document.getElementById("workingHours");
+  if (thoiGianLamViec === "Part-time") {
+    workingHoursDiv.style.display = "block";
+    document.getElementById("fullTimeHours").style.display = "none";
+    document.getElementById("partTimeHours").style.display = "block";
+  } else {
+    workingHoursDiv.style.display = "none";
+  }
+}
+</script>
+
+      
+      
+
+      
+    </main>
+
+    <footer>
+      <section id="contact">
+        <h3><b>📍 Liên Hệ Nhà Hàng</b></h3>
+        <div class="image-wrapper">
+          <img src="anh.jpg" alt="Logo nhà hàng" class="profile-img" />
+        </div>
+        <span class="profile-name"><b>Nhà Hàng Hương Việt</b></span>
+      </section>
+
+      <div class="footer-container">
+        <div class="footer-info">
+          <p>
+            <b>🌐 Facebook:</b>
+            <a href="https://www.facebook.com/share/1EiDKu8Ysp/" target="_blank"
+              >Trang Facebook</a
+            >
+          </p>
+          <p>
+            <b>📧 Email:</b>
+            <a href="mailto:contact@nhahanghuongviet.com"
+              >contact@nhahanghuongviet.com</a
+            >
+          </p>
+          <p>
+            <b>📞 Điện thoại:</b>
+            <a href="tel:+8449974495">(+84) 349 974 495</a>
+          </p>
+          <p>
+            <b>📍 Địa chỉ:</b> 123 Đường Trương Định, Quận Hiệp Thành, TP. Thủ
+            Dầu Một, tỉnh Bình Dương, Việt Nam.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>
+          &copy; <span id="year"></span>
+          <b>Nhà Hàng Hương Việt | All Rights Reserved.</b>
+        </p>
+      </div>
+
+      
+    </footer>
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+  </body>
+</html>

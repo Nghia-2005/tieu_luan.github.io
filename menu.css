@@ -1,0 +1,304 @@
+/* Định dạng menu */
+.nav-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  background: linear-gradient(90deg, #ff6600, #cc3300);
+  padding: 15px 0;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-menu li {
+  margin: 0 15px;
+}
+
+.nav-menu a {
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 15px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.nav-menu a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+* {
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+/* Bù khoảng cách do menu cố định */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #111;
+  color: #fff;
+}
+
+/* Định dạng banner */
+.banner {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.text-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgb(255, 255, 255);
+  text-align: center;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.977);
+}
+
+.text-overlay h1 {
+  font-size: 3rem; /* Dùng rem thay vì px */
+  font-weight: bold;
+}
+
+.text-overlay p {
+  font-size: 1.5rem;
+}
+
+/* Phần giới thiệu */
+.profile {
+  background-color: #f9f9f9;
+  padding: 40px 0;
+}
+
+/* Tiêu đề */
+h1 {
+  font-family: "Times New Roman", Times, serif;
+  color: rgb(255, 255, 255);
+  font-size: 3rem;
+  font-weight: bolder;
+  text-align: center;
+}
+
+h2 {
+  font-size: 2rem;
+  font-family: sans-serif;
+}
+
+h3 {
+  font-size: 1.8rem;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 500;
+}
+
+p {
+  font-size: 1.5rem;
+}
+
+/* Định dạng menu món ăn */
+.menu-category {
+  margin-bottom: 2rem;
+}
+
+.menu-category h2 {
+  font-size: 2rem;
+  border-bottom: 2px solid #333;
+  padding-bottom: 0.5rem;
+}
+
+.menu-book {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+  position: relative;
+}
+.menu-page {
+  display: none;
+}
+.menu-page.active {
+  display: flex;
+}
+.menu-container {
+  display: flex;
+  width: 100%;
+}
+.left-panel,
+.right-panel {
+  padding: 20px;
+}
+.left-panel {
+  width: 40%;
+  background-color: #222;
+  text-align: center;
+}
+.left-panel img {
+  max-width: 100%;
+  border-radius: 10px;
+}
+.left-panel h1 {
+  font-size: 36px;
+  margin: 20px 0 10px;
+  color: #f1c40f;
+}
+.left-panel p {
+  font-size: 14px;
+  color: #ccc;
+}
+.offer {
+  background-color: #f1c40f;
+  color: #000;
+  display: inline-block;
+  padding: 8px 15px;
+  margin: 15px 0;
+  font-weight: bold;
+  border-radius: 5px;
+}
+
+.right-panel {
+  width: 60%;
+  background-color: #1c1c1c;
+}
+.section {
+  margin-bottom: 20px;
+}
+.section-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #f1c40f;
+  border-bottom: 2px solid #f1c40f;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 0;
+  border-bottom: 1px solid #333;
+}
+.menu-item span {
+  font-size: 16px;
+}
+
+.nav-buttons {
+  text-align: center;
+  margin-top: 20px;
+}
+.nav-buttons button {
+  background-color: #f1c40f;
+  border: none;
+  padding: 10px 20px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 0 10px;
+  border-radius: 5px;
+  color: #000;
+}
+.booking-button {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.booking-button button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.booking-button button:hover {
+  background-color: #0056b3;
+}
+
+.nav-buttons {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.nav-buttons button {
+  font-size: 16px;
+  padding: 10px 20px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+footer {
+  background: #f6e7e7;
+  color: rgb(0, 0, 0);
+  padding: 30px 0;
+  text-align: center;
+}
+
+.image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px auto;
+}
+
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid #1b1402;
+}
+
+.profile-name {
+  display: block;
+  font-size: 18px;
+  margin-top: 10px;
+  color: #291f04;
+  text-align: center;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+.footer-info p {
+  font-size: 16px;
+  color: #281d0a;
+  margin: 5px 0;
+  text-align: center;
+}
+
+.footer-info a {
+  color: #f8b400;
+  text-decoration: none;
+}
+
+.footer-info a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  background: #e96565;
+  padding: 10px 0;
+  margin-top: 20px;
+}
+
+.footer-bottom p {
+  font-size: 14px;
+  margin: 0;
+  text-align: center;
+}
