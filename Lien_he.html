@@ -13,6 +13,10 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+   
+   
+    
+    
   </head>
   <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -64,201 +68,161 @@
         </button>
       </section>
 
-      <!-- Modal Đặt bàn -->
+<!-- Modal Đặt bàn -->
 <div
-class="modal fade"
-id="datBanModal"
-tabindex="-1"
-aria-labelledby="datBanModalLabel"
-aria-hidden="true"
+  class="modal fade"
+  id="datBanModal"
+  tabindex="-1"
+  aria-labelledby="datBanModalLabel"
+  aria-hidden="true"
 >
-<div class="modal-dialog">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h5 class="modal-title" id="datBanModalLabel">Đặt Bàn</h5>
-      <button
-        type="button"
-        class="btn-close"
-        data-bs-dismiss="modal"
-        aria-label="Close"
-        onclick="resetForm()"
-      ></button>
-    </div>
-    <div class="modal-body">
-      <form id="bookingForm">
-        <div class="mb-3">
-          <label for="name" class="form-label">Họ và Tên:</label>
-          <input type="text" class="form-control" id="name" required />
-        </div>
-        <div class="mb-3">
-          <label for="phone" class="form-label">Số Điện Thoại:</label>
-          <input type="tel" class="form-control" id="phone" required />
-        </div>
-        <div class="mb-3">
-          <label for="date" class="form-label">Ngày:</label>
-          <input type="date" class="form-control" id="date" required />
-        </div>
-        <div class="mb-3">
-          <label for="time" class="form-label">Giờ:</label>
-          <input type="time" class="form-control" id="time" required />
-        </div>
-        <div class="mb-3">
-          <label for="guests" class="form-label">Số Lượng Khách:</label>
-          <input
-            type="number"
-            class="form-control"
-            id="guests"
-            min="1"
-            required
-          />
-        </div>
-        <div class="mb-3">
-          <label for="note" class="form-label">Ghi Chú:</label>
-          <textarea class="form-control" id="note"></textarea>
-        </div>
-        <div class="d-flex justify-content-between">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-            onclick="resetForm()"
-          >
-            Đóng
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            onclick="addBooking()"
-          >
-            Xác Nhận
-          </button>
-        </div>
-      </form>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="datBanModalLabel">Đặt Bàn</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+          onclick="resetForm()"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form id="bookingForm">
+          <div class="mb-3">
+            <label for="name" class="form-label">Họ và Tên:</label>
+            <input type="text" class="form-control" id="name" required />
+          </div>
+          <div class="mb-3">
+            <label for="phone" class="form-label">Số Điện Thoại:</label>
+            <input type="tel" class="form-control" id="phone" required />
+          </div>
+          <div class="mb-3">
+            <label for="date" class="form-label">Ngày:</label>
+            <input type="date" class="form-control" id="date" required />
+          </div>
+          <div class="mb-3">
+            <label for="time" class="form-label">Giờ:</label>
+            <input type="time" class="form-control" id="time" required />
+          </div>
+          <div class="mb-3">
+            <label for="guests" class="form-label">Số Lượng Khách:</label>
+            <input
+              type="number"
+              class="form-control"
+              id="guests"
+              min="1"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="note" class="form-label">Ghi Chú:</label>
+            <textarea class="form-control" id="note"></textarea>
+          </div>
+          <div class="d-flex justify-content-between">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+              onclick="resetForm()"
+            >
+              Đóng
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary"
+              onclick="addBooking()"
+            >
+              Xác Nhận
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </div>
+<!-- Toast thông báo thành công -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 1055">
+  <div
+    id="toastSuccess"
+    class="toast align-items-center text-white bg-success border-0"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <div class="d-flex">
+      <div class="toast-body">
+        Đặt bàn thành công!
+      </div>
+      <button
+        type="button"
+        class="btn-close btn-close-white me-2 m-auto"
+        data-bs-dismiss="toast"
+        aria-label="Close"
+      ></button>
+    </div>
+  </div>
 </div>
-
-<div class="container mt-5">
-<h3 class="text-center">
-  Danh Sách Đặt Bàn (<span id="bookingCount">0</span>)
-</h3>
-<ul id="bookingList" class="list-group">
-  <li class="list-group-item text-center">Chưa có đơn đặt bàn nào</li>
-</ul>
-</div>
-
 <script>
-// Lấy dữ liệu đặt bàn từ localStorage khi trang được tải lại
-let bookings = JSON.parse(localStorage.getItem("bookings")) || [];
-
-// Cập nhật danh sách đặt bàn
-function updateBookingList() {
-  const list = document.getElementById("bookingList");
-  const bookingCount = document.getElementById("bookingCount");
-
-  list.innerHTML = "";
-  if (bookings.length === 0) {
-    list.innerHTML =
-      '<li class="list-group-item text-center">Chưa có đơn đặt bàn nào</li>';
-    bookingCount.innerText = "0";
-    return;
+  // Lấy dữ liệu đặt bàn từ sessionStorage khi trang được tải
+  let bookings = JSON.parse(sessionStorage.getItem("bookings")) || [];
+  // Cập nhật danh sách đặt bàn
+  function updateBookingList() {
+    sessionStorage.setItem("bookings", JSON.stringify(bookings));
   }
-
-  bookings.forEach((booking, index) => {
-    const li = document.createElement("li");
-    li.className =
-      "list-group-item d-flex justify-content-between align-items-center";
-    li.innerHTML = `
-    <div>
-      <b>${booking.name}</b> - ${booking.phone} <br>
-      📅 ${booking.date} ⏰ ${booking.time} - 👥 ${booking.guests} khách <br>
-      📝 ${booking.note || "Không có ghi chú"}
-    </div>
-    <div>
-      <button class="btn btn-warning btn-sm" onclick="editBooking(${index})">Sửa</button>
-    </div>
-  `;
-    list.appendChild(li);
-  });
-
-  // Cập nhật số lượng đặt bàn
-  bookingCount.innerText = bookings.length;
-
-  // Lưu lại vào localStorage mỗi khi danh sách thay đổi
-  localStorage.setItem("bookings", JSON.stringify(bookings));
-}
-
-// Thêm hoặc sửa đơn đặt bàn
-function addBooking() {
-  const name = document.getElementById("name").value;
-  const phone = document.getElementById("phone").value;
-  const date = document.getElementById("date").value;
-  const time = document.getElementById("time").value;
-  const guests = document.getElementById("guests").value;
-  const note = document.getElementById("note").value;
-
-  if (!name || !phone || !date || !time || !guests) {
-    alert("Vui lòng nhập đầy đủ thông tin!");
-    return;
-  }
-
-  const editIndex = document
-    .getElementById("bookingForm")
-    .getAttribute("data-edit-index");
-
-  if (editIndex !== null) {
-    // Nếu đang sửa, cập nhật lại thông tin
-    bookings[editIndex] = { name, phone, date, time, guests, note };
-    document
-      .getElementById("bookingForm")
-      .removeAttribute("data-edit-index");
-  } else {
-    // Nếu không phải sửa, thêm mới
+  // Thêm đơn đặt bàn mới
+  function addBooking() {
+    const name = document.getElementById("name").value;
+    const phone = document.getElementById("phone").value;
+    const date = document.getElementById("date").value;
+    const time = document.getElementById("time").value;
+    const guests = document.getElementById("guests").value;
+    const note = document.getElementById("note").value;
+    // Kiểm tra nếu thiếu thông tin
+    if (!name || !phone || !date || !time || !guests) {
+      alert("Vui lòng nhập đầy đủ thông tin!");
+      return;
+    }
     const booking = { name, phone, date, time, guests, note };
     bookings.push(booking);
+    updateBookingList(); // Cập nhật danh sách đặt bàn
+    document.getElementById("bookingForm").reset(); // Reset form
+    // Ẩn modal đúng cách bằng Bootstrap 5 API
+    const modalEl = document.getElementById("datBanModal");
+    const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
+    modal.hide();
+    // Khi modal ẩn xong, hiện toast + dọn dẹp lớp mờ
+    modalEl.addEventListener("hidden.bs.modal", function () {
+      const toast = new bootstrap.Toast(document.getElementById("toastSuccess"));
+      toast.show(); // Hiển thị toast thông báo thành công
+      // Dọn modal backdrop nếu bị kẹt
+      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+      document.body.classList.remove('modal-open'); // Xóa lớp mở modal
+      document.body.style = ''; // Reset lại style của body
+    }, { once: true });
   }
-
-  updateBookingList(); // Cập nhật danh sách
-  document.getElementById("bookingForm").reset();
-  $("#datBanModal").modal("hide");
-}
-
-// Chỉnh sửa đơn đặt bàn
-function editBooking(index) {
-  const booking = bookings[index];
-
-  // Điền thông tin vào form
-  document.getElementById("name").value = booking.name;
-  document.getElementById("phone").value = booking.phone;
-  document.getElementById("date").value = booking.date;
-  document.getElementById("time").value = booking.time;
-  document.getElementById("guests").value = booking.guests;
-  document.getElementById("note").value = booking.note;
-
-  // Gán index vào form để biết đang sửa đơn nào
-  document
-    .getElementById("bookingForm")
-    .setAttribute("data-edit-index", index);
-
-  // Mở modal sửa
-  $("#datBanModal").modal("show");
-}
-
-// Reset form khi đóng modal
-function resetForm() {
-  document.getElementById("bookingForm").reset();
-  document
-    .getElementById("bookingForm")
-    .removeAttribute("data-edit-index");
-}
-
-// Khởi động khi trang được tải
-window.onload = updateBookingList;
+  // Reset form khi đóng modal
+  function resetForm() {
+    document.getElementById("bookingForm").reset();
+  }
+  // Hàm fix modal bị stuck
+  function fixModalStuck() {
+    document.querySelectorAll(".modal-backdrop").forEach((el) => el.remove());
+    document.body.classList.remove("modal-open");
+    document.body.style = "";
+  }
+  // Lắng nghe sự kiện mở modal
+  document.getElementById("openModalBtn").addEventListener("click", function () {
+    fixModalStuck();
+    const modal = new bootstrap.Modal(document.getElementById("datBanModal"));
+    modal.show();
+  });
+  // Khi trang được tải
+  window.onload = updateBookingList;
 </script>
 
-
-      <!-- Modal Phản hồi -->
+ <!-- Modal Phản hồi -->
 <div
 class="modal fade"
 id="phanHoiModal"
@@ -328,7 +292,6 @@ aria-hidden="true"
   </div>
 </div>
 </div>
-
 <!-- Danh sách phản hồi -->
 <div class="container mt-4">
 <h3 class="text-center">
@@ -338,23 +301,26 @@ aria-hidden="true"
   <li class="list-group-item text-center">Chưa có phản hồi nào</li>
 </ul>
 </div>
-
 <script>
 let feedbacks = JSON.parse(localStorage.getItem("feedbacks")) || [];
-
+// Hàm fix modal bị stuck và dọn backdrop dư thừa
+function fixModalStuck() {
+  const modalBackdrops = document.querySelectorAll(".modal-backdrop");
+  modalBackdrops.forEach((el) => el.remove());  // Xóa tất cả backdrop
+  document.body.classList.remove("modal-open");  // Loại bỏ class modal-open
+  document.body.style = "";  // Reset các style của body
+}
 // Cập nhật danh sách phản hồi và số lượng phản hồi
 function updateFeedbackList() {
   const list = document.getElementById("feedbackList");
   list.innerHTML = "";
   const feedbackCount = document.getElementById("feedbackCount");
-
   if (feedbacks.length === 0) {
     list.innerHTML =
       '<li class="list-group-item text-center">Chưa có phản hồi nào</li>';
     feedbackCount.innerText = "";
     return;
   }
-
   feedbackCount.innerText = `(${getTotalFeedbacks()} phản hồi)`;
 
   feedbacks.forEach((fb, index) => {
@@ -382,7 +348,6 @@ function updateFeedbackList() {
     updateComments(index);
   });
 }
-
 // Thêm phản hồi mới
 function addFeedback() {
   const name = document.getElementById("userName").value.trim();
@@ -393,30 +358,27 @@ function addFeedback() {
     alert("Vui lòng nhập đầy đủ họ tên và nội dung phản hồi!");
     return;
   }
-
   const feedback = {
     name,
     rating,
     message,
     comments: [],
   };
-
   feedbacks.push(feedback);
   localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
   updateFeedbackList();
-
   // Reset form
   document.getElementById("userName").value = "";
   document.getElementById("rating").value = "5";
   document.getElementById("message").value = "";
 
-  // Đóng modal
+  // Đóng modal và dọn dẹp backdrop dư thừa
   const modal = bootstrap.Modal.getInstance(
     document.getElementById("phanHoiModal")
   );
   modal.hide();
+  fixModalStuck();
 }
-
 // Thêm bình luận
 function addComment(feedbackIndex) {
   const commentText = document
@@ -430,35 +392,30 @@ function addComment(feedbackIndex) {
     alert("Vui lòng nhập bình luận!");
     return;
   }
-
   const comment = {
     text: commentText,
     icon: commentIcon,
   };
-
-  feedbacks[feedbackIndex].comments.push(comment);
+ feedbacks[feedbackIndex].comments.push(comment);
   localStorage.setItem("feedbacks", JSON.stringify(feedbacks));
   updateComments(feedbackIndex);
-
   // Cập nhật số lượng phản hồi
   updateFeedbackList();
-
   // Clear input fields
   document.getElementById(`commentText${feedbackIndex}`).value = "";
+  // Sau khi thêm bình luận, xử lý modal lại
+  fixModalStuck();  // Đảm bảo backdrop bị xóa và modal không bị stuck
 }
-
 // Hiển thị các bình luận
 function updateComments(feedbackIndex) {
   const commentList = document.getElementById(
     `commentsList${feedbackIndex}`
   );
   commentList.innerHTML = "";
-
   if (feedbacks[feedbackIndex].comments.length === 0) {
     commentList.innerHTML = ""; // Không hiển thị dòng chữ "Chưa có bình luận nào"
     return;
   }
-
   feedbacks[feedbackIndex].comments.forEach((comment, index) => {
     const li = document.createElement("li");
     li.className =
@@ -467,24 +424,22 @@ function updateComments(feedbackIndex) {
     commentList.appendChild(li);
   });
 }
-
 // Tính tổng số phản hồi (bao gồm bình luận)
 function getTotalFeedbacks() {
   let total = feedbacks.length;
-
   feedbacks.forEach((fb) => {
     total += fb.comments.length; // Cộng thêm số lượng bình luận vào tổng số phản hồi
   });
-
   return total;
 }
-
 // Gọi hàm cập nhật khi tải trang
 updateFeedbackList();
 </script>
 
 
-     <!-- Modal Tuyển dụng -->
+
+
+ <!-- Modal Tuyển dụng -->
 <div class="modal fade" id="tuyenDungModal" tabindex="-1" aria-labelledby="tuyenDungLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -504,7 +459,6 @@ updateFeedbackList();
               <input type="tel" class="form-control" id="soDienThoai" name="soDienThoai" required />
             </div>
           </div>
-
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="gioiTinh" class="col-form-label">Giới tính:</label>
@@ -527,7 +481,6 @@ updateFeedbackList();
               </select>
             </div>
           </div>
-
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="ngaySinh" class="col-form-label">Ngày sinh:</label>
@@ -538,7 +491,6 @@ updateFeedbackList();
               <input type="number" class="form-control" id="luong" name="luong" required placeholder="Mức lương (VND)" />
             </div>
           </div>
-
           <div class="mb-3">
             <label for="kinhNghiem" class="col-form-label">Kinh nghiệm làm việc:</label>
             <select class="form-select" id="kinhNghiem" name="kinhNghiem" required>
@@ -549,7 +501,6 @@ updateFeedbackList();
               <option value="Trên 5 năm">Trên 5 năm</option>
             </select>
           </div>
-
           <div class="mb-3">
             <label for="thoiGianLamViec" class="col-form-label">Thời gian làm việc:</label>
             <select class="form-select" id="thoiGianLamViec" name="thoiGianLamViec" required onchange="showWorkingHours()">
@@ -558,7 +509,6 @@ updateFeedbackList();
               <option value="Part-time">Part-time</option>
             </select>
           </div>
-
           <div id="workingHours" class="mb-3" style="display: none">
             <label class="col-form-label">Giờ làm việc:</label>
             <p id="fullTimeHours" style="display: none">8:00 AM - 5:00 PM</p>
@@ -574,7 +524,6 @@ updateFeedbackList();
               </div>
             </div>
           </div>
-
           <div class="mb-3">
             <label for="uuDiem" class="col-form-label">Ưu điểm:</label>
             <textarea class="form-control" id="uuDiem" name="uuDiem"></textarea>
@@ -588,141 +537,142 @@ updateFeedbackList();
     </div>
   </div>
 </div>
-
-<!-- Danh sách ứng viên -->
-<div class="container mt-5">
-  <h3>Danh sách ứng viên đã ứng tuyển (<span id="totalApplicants">0</span>)</h3>
-  <table class="table">
+<div class="container mt-4">
+  <h5 class="mt-4">Tổng ứng viên: <span id="totalApplicants">0</span></h5>
+  <table class="table mt-3">
     <thead>
       <tr>
-        <th scope="col">Họ và tên</th>
-        <th scope="col">Vị trí ứng tuyển</th>
-        <th scope="col">Thời gian làm việc</th>
-        <th scope="col">Mức lương mong muốn</th>
-        <th scope="col">Số điện thoại</th>
-        <th scope="col">Giới tính</th>
-        <th scope="col">Tuổi</th>
-        <th scope="col">Ưu điểm</th>
+        <th>Họ tên</th>
+        <th>Vị trí</th>
+        <th>Thời gian</th>
+        <th>Giới tính</th>
+        <th>Tuổi</th>
       </tr>
     </thead>
-    <tbody id="applicantList">
-      <!-- Dữ liệu ứng viên sẽ được thêm vào đây -->
-    </tbody>
+    <tbody id="applicantList"></tbody>
   </table>
 </div>
-
-<!-- Javascript xử lý -->
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-  let applicantCount = 0;
-  const submitBtn = document.getElementById("submitBtn");
-  const applicantList = document.getElementById("applicantList");
-  const totalApplicants = document.getElementById("totalApplicants");
-
-  // Load applicants from LocalStorage
-  let applicants = JSON.parse(localStorage.getItem("applicants")) || [];
-  applicants.forEach(function (applicant) {
-    const row = document.createElement("tr");
-    row.innerHTML = `<td>${applicant.hoTen}</td>
-        <td>${applicant.viTri}</td>
-        <td>${applicant.thoiGianLamViec} ${applicant.shift ? "(" + applicant.shift + ")" : ""}</td>
-        <td>${applicant.luong} VND</td>
-        <td>${applicant.soDienThoai}</td>
-        <td>${applicant.gioiTinh}</td>
-        <td>${applicant.age}</td>
-        <td>${applicant.uuDiem || "Không có"}</td>`; // Hiển thị "Không có" nếu không có ưu điểm
-    applicantList.appendChild(row);
-  });
-
-  // Update total applicants
-  totalApplicants.textContent = applicants.length;
-
-  submitBtn.addEventListener("click", function (event) {
-    event.preventDefault();
-
-    const hoTen = document.getElementById("hoTen").value;
-    const soDienThoai = document.getElementById("soDienThoai").value;
-    const gioiTinh = document.getElementById("gioiTinh").value;
-    const ngaySinh = document.getElementById("ngaySinh").value;
-    const viTri = document.getElementById("viTri").value;
-    const luong = document.getElementById("luong").value;
-    const kinhNghiem = document.getElementById("kinhNghiem").value;
-    const thoiGianLamViec = document.getElementById("thoiGianLamViec").value;
-    const shift = document.querySelector('input[name="shift"]:checked')?.value || "";
-    const uuDiem = document.getElementById("uuDiem").value || "Không có"; // Default to "Không có" if empty
-
-    if (hoTen && soDienThoai && gioiTinh && ngaySinh && viTri && luong && thoiGianLamViec) {
+  document.addEventListener("DOMContentLoaded", function () {
+    const submitBtn = document.getElementById("submitBtn");
+    const applicantList = document.getElementById("applicantList");
+    const totalApplicants = document.getElementById("totalApplicants");
+    // Load từ LocalStorage
+    let applicants = JSON.parse(localStorage.getItem("applicants")) || [];
+    applicants.forEach(function (applicant) {
+      addApplicantToTable(applicant);
+    });
+    totalApplicants.textContent = applicants.length;
+    // Nút Nộp
+    submitBtn.addEventListener("click", async function (event) {
+      event.preventDefault();
+      const hoTen = document.getElementById("hoTen").value;
+      const soDienThoai = document.getElementById("soDienThoai").value;
+      const gioiTinh = document.getElementById("gioiTinh").value;
+      const ngaySinh = document.getElementById("ngaySinh").value;
+      const viTri = document.getElementById("viTri").value;
+      const luong = document.getElementById("luong").value;
+      const kinhNghiem = document.getElementById("kinhNghiem").value;
+      const thoiGianLamViec = document.getElementById("thoiGianLamViec").value;
+      const shift = document.querySelector('input[name="shift"]:checked')?.value || "";
+      const uuDiem = document.getElementById("uuDiem").value || "Không có";
+      if (!hoTen || !soDienThoai || !gioiTinh || !ngaySinh || !viTri || !luong || !thoiGianLamViec) {
+        alert("Vui lòng điền đầy đủ thông tin.");
+        return;
+      }
       if (thoiGianLamViec === "Part-time" && shift === "") {
         alert("Vui lòng chọn ca làm việc nếu bạn chọn Part-time.");
         return;
       }
-
       const birthDate = new Date(ngaySinh);
       const age = new Date().getFullYear() - birthDate.getFullYear();
-
       if (age < 18) {
         alert("Bạn phải trên 18 tuổi để ứng tuyển.");
         return;
       }
-
-      // Lưu thông tin ứng viên vào LocalStorage
       const applicant = {
         hoTen,
         soDienThoai,
         gioiTinh,
+        ngaySinh,
         viTri,
         luong,
         kinhNghiem,
         thoiGianLamViec,
         shift,
-        age,
         uuDiem,
+        age
       };
-      applicants.push(applicant);
-      localStorage.setItem("applicants", JSON.stringify(applicants));
-
-      // Thêm ứng viên vào bảng
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Đang gửi...";
+       // Lưu vào localStorage
+        applicants.push(applicant);
+        localStorage.setItem("applicants", JSON.stringify(applicants));
+        // Cập nhật bảng
+        addApplicantToTable(applicant);
+        totalApplicants.textContent = applicants.length;
+        // Thông báo
+        alert("Thông tin đã được gửi thành công!");
+        // Reset form
+        document.getElementById("tuyenDungForm").reset();
+        document.getElementById("workingHours").style.display = "none";
+        // Đóng modal
+        const modalElement = document.getElementById("tuyenDungModal");
+        const modal = bootstrap.Modal.getOrCreateInstance(modalElement);
+        modal.hide();
+        // Xử lý khi modal đã đóng xong
+        modalElement.addEventListener('hidden.bs.modal', () => {
+          const backdrop = document.querySelector(".modal-backdrop");
+          if (backdrop) backdrop.remove();
+          document.body.classList.remove("modal-open");
+          document.body.style.overflow = "auto"; // hoặc ""
+        }, { once: true });
+        // Reset nút
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Nộp";
+        }, 500);
+      } catch (error) {
+        console.error("Lỗi:", error);
+        alert("Gửi thất bại. Vui lòng thử lại!");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Nộp";
+      }
+    });
+    function addApplicantToTable(applicant) {
       const row = document.createElement("tr");
-      row.innerHTML = `<td>${hoTen}</td>
-          <td>${viTri}</td>
-          <td>${thoiGianLamViec} ${shift ? "(" + shift + ")" : ""}</td>
-          <td>${luong} VND</td>
-          <td>${soDienThoai}</td>
-          <td>${gioiTinh}</td>
-          <td>${age}</td>
-          <td>${uuDiem}</td>`;
+      row.innerHTML = `
+        <td>${applicant.hoTen}</td>
+        <td>${applicant.viTri}</td>
+        <td>${applicant.thoiGianLamViec} ${applicant.shift ? "(" + applicant.shift + ")" : ""}</td>
+        <td>${applicant.gioiTinh}</td>
+        <td>${applicant.age}</td>`;
       applicantList.appendChild(row);
-
-      applicantCount++;
-      totalApplicants.textContent = applicantCount;
-
-      const modal = bootstrap.Modal.getInstance(document.getElementById("tuyenDungModal"));
-      modal.hide();
-      document.getElementById("tuyenDungForm").reset();
-      document.getElementById("workingHours").style.display = "none";
-    } else {
-      alert("Vui lòng điền đầy đủ thông tin.");
     }
   });
-});
-
-// Hiển thị ca làm việc khi chọn Part-time
-function showWorkingHours() {
-  const thoiGianLamViec = document.getElementById("thoiGianLamViec").value;
-  const workingHoursDiv = document.getElementById("workingHours");
-  if (thoiGianLamViec === "Part-time") {
-    workingHoursDiv.style.display = "block";
-    document.getElementById("fullTimeHours").style.display = "none";
-    document.getElementById("partTimeHours").style.display = "block";
-  } else {
-    workingHoursDiv.style.display = "none";
+  function showWorkingHours() {
+    const thoiGianLamViec = document.getElementById("thoiGianLamViec").value;
+    const workingHoursDiv = document.getElementById("workingHours");
+    if (thoiGianLamViec === "Part-time") {
+      workingHoursDiv.style.display = "block";
+      document.getElementById("fullTimeHours").style.display = "none";
+      document.getElementById("partTimeHours").style.display = "block";
+    } else if (thoiGianLamViec === "Full-time") {
+      workingHoursDiv.style.display = "block";
+      document.getElementById("fullTimeHours").style.display = "block";
+      document.getElementById("partTimeHours").style.display = "none";
+    } else {
+      workingHoursDiv.style.display = "none";
+    }
   }
-}
 </script>
-
-      
-      
-
+<!-- Thêm đoạn CSS này để chắc chắn backdrop không giữ lại -->
+<style>
+  body:not(.modal-open) .modal-backdrop {
+    display: none !important;
+  }
+</style>
       
     </main>
 
@@ -772,7 +722,8 @@ function showWorkingHours() {
     
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
   </body>
 </html>
